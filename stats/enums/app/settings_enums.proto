@@ -3366,6 +3366,10 @@ enum PageId {
     // CATEGORY: SETTINGS
     // OS: T
     LE_AUDIO_BROADCAST_SCAN_QR_CODE = 1926;
+
+    // OPEN: Settings > Display > Status bar lyric
+    // CATEGORY: SETTINGS
+    STATUS_BAR_LYRIC = 3000;
 }
 
 // Battery Saver schedule types.
