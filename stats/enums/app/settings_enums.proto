@@ -3367,6 +3367,16 @@ enum PageId {
     // OS: T
     LE_AUDIO_BROADCAST_SCAN_QR_CODE = 1926;
 
+    // OPEN: Settings > About phone > Limited Warranty
+    // CATEGORY: SETTINGS
+    // OS: T
+    LIMITED_WARRANTY_COUNTRY_LIST = 1927;
+
+    // OPEN: Settings > About phone > Limited Warranty > Click any country
+    // CATEGORY: SETTINGS
+    // OS: T
+    LIMITED_WARRANTY_DETAILS = 1928;
+
     // OPEN: Settings > Display > Status bar lyric
     // CATEGORY: SETTINGS
     STATUS_BAR_LYRIC = 3000;
