@@ -17,6 +17,8 @@
 syntax = "proto2";
 
 package android.os.statsd;
+
+option optimize_for = CODE_SIZE;
 option java_package = "com.android.os";
 option java_outer_classname = "AtomsProto";
 
@@ -39,8 +41,10 @@ import "frameworks/proto_logging/stats/enums/debug/enums.proto";
 import "frameworks/proto_logging/stats/enums/hardware/biometrics/enums.proto";
 import "frameworks/proto_logging/stats/enums/hardware/sensor/assist/enums.proto";
 import "frameworks/proto_logging/stats/enums/hotword/enums.proto";
+import "frameworks/proto_logging/stats/enums/jank/enums.proto";
 import "frameworks/proto_logging/stats/enums/media/audio/enums.proto";
 import "frameworks/proto_logging/stats/enums/media/enums.proto";
+import "frameworks/proto_logging/stats/enums/mms/enums.proto";
 import "frameworks/proto_logging/stats/enums/nearby/enums.proto";
 import "frameworks/proto_logging/stats/enums/net/enums.proto";
 import "frameworks/proto_logging/stats/enums/neuralnetworks/enums.proto";
@@ -337,7 +341,7 @@ message Atom {
         AssistGestureProgressReported assist_gesture_progress_reported = 176 [(module) = "sysui"];
         TouchGestureClassified touch_gesture_classified = 177 [(module) = "framework"];
         HiddenApiUsed hidden_api_used = 178 [(module) = "framework"];
-        StyleUIChanged style_ui_changed = 179 [(module) = "sysui"];
+        StyleUIChanged style_ui_changed = 179 [(module) = "sysui", (module) = "wallpaper"];
         PrivacyIndicatorsInteracted privacy_indicators_interacted =
                 180 [(module) = "permissioncontroller"];
         AppInstallOnExternalStorageReported app_install_on_external_storage_reported =
@@ -670,6 +674,8 @@ message Atom {
             [(module) = "appsearch"];
         AppBackgroundRestrictionsInfo app_background_restrictions_info = 441
             [(module) = "framework"];
+        MmsSmsProviderGetThreadIdFailed mms_sms_provider_get_thread_id_failed = 442 [(module) = "telephony"];
+        MmsSmsDatabaseHelperOnUpgradeFailed mms_sms_database_helper_on_upgrade_failed = 443 [(module) = "telephony"];
         PermissionReminderNotificationInteracted permission_reminder_notification_interacted =
             444 [(module) = "permissioncontroller"];
         RecentPermissionDecisionsInteracted recent_permission_decisions_interacted =
@@ -691,6 +697,7 @@ message Atom {
         IsolatedCompilationEnded isolated_compilation_ended = 458 [(module) = "art"];
         OnsOpportunisticEsimProvisioningComplete ons_opportunistic_esim_provisioning_complete = 459 [(module) = "ons"];
         TelephonyAnomalyDetected telephony_anomaly_detected = 461 [(module) = "telephony"];
+        LetterboxPositionChanged letterbox_position_changed = 462 [(module) = "framework"];
         RemoteKeyProvisioningAttempt remote_key_provisioning_attempt = 463 [(module) = "remoteprovisioner"];
         RemoteKeyProvisioningNetworkInfo remote_key_provisioning_network_info = 464 [(module) = "remoteprovisioner"];
         RemoteKeyProvisioningTiming remote_key_provisioning_timing = 465 [(module) = "remoteprovisioner"];
@@ -698,18 +705,43 @@ message Atom {
         BackgroundDexoptJobEnded background_dexopt_job_ended = 467 [(module) = "art"];
         SyncExemptionOccurred sync_exemption_occurred = 468 [(module) = "framework"];
         AutofillPresentationEventReported autofill_presentation_event_reported = 469 [(module) = "framework"];
+        DockStateChanged dock_state_changed = 470 [(module) = "framework"];
         BroadcastDeliveryEventReported broadcast_delivery_event_reported =
                 475 [(module) = "framework"];
         ServiceRequestEventReported service_request_event_reported = 476 [(module) = "framework"];
         ProviderAcquisitionEventReported provider_acquisition_event_reported =
                 477 [(module) = "framework"];
         BluetoothDeviceNameReported bluetooth_device_name_reported = 478 [(module) = "bluetooth"];
+        VibrationReported vibration_reported = 487 [(module) = "framework"];
+        // reserved 492
+        DisplayBrightnessChanged display_brightness_changed = 494 [(module) = "framework"];
+        ActivityActionBlocked activity_action_blocked = 495 [(module) = "framework"];
+        AmbientBrightnessStatsReported ambient_brightness_stats_reported = 507 [(module) = "framework"];
+        MediametricsSpatializerCapabilitiesReported mediametrics_spatializercapabilities_reported = 508;
+        MediametricsSpatializerDeviceEnabledReported mediametrics_spatializerdeviceenabled_reported = 509;
+        MediametricsHeadTrackerDeviceEnabledReported mediametrics_headtrackerdeviceenabled_reported = 510;
+        MediametricsHeadTrackerDeviceSupportedReported mediametrics_headtrackerdevicesupported_reported = 511;
+        HearingAidInfoReported hearing_aid_info_reported = 513 [(module) = "framework"];
+        DeviceWideJobConstraintChanged device_wide_job_constraint_changed =
+            514 [(module) = "framework"];
+        IwlanSetupDataCallResultReported iwlan_setup_data_call_result_reported = 519 [(module) = "iwlan"];
+        IwlanPdnDisconnectedReasonReported iwlan_pdn_disconnected_reason_reported = 520 [(module) = "iwlan"];
+        AirplaneModeSessionReported airplane_mode_session_reported = 521 [(module) = "wifi", (module) = "bluetooth"];
+        BluetoothDisconnectionReasonReported bluetooth_disconnection_reason_reported = 529 [(module) = "bluetooth"];
+        BluetoothLocalVersionsReported bluetooth_local_versions_reported = 530 [(module) = "bluetooth"];
+        BluetoothRemoteSupportedFeaturesReported bluetooth_remote_supported_features_reported = 531 [(module) = "bluetooth"];
+        BluetoothLocalSupportedFeaturesReported bluetooth_local_supported_features_reported = 532 [(module) = "bluetooth"];
+        BluetoothGattAppInfo bluetooth_gatt_app_info = 533 [(module) = "bluetooth"];
+        LauncherImpressionEvent launcher_impression_event = 547 [(module) = "sysui"];
+        BrightnessConfigurationUpdated brightness_configuration_updated = 534 [(module) = "framework"];
+        PerformanceHintSessionReported performance_hint_session_reported = 574 [(module) = "framework"];
+        HotwordAudioEgressEventReported hotword_audio_egress_event_reported = 578 [(module) = "framework"];
         // StatsdStats tracks platform atoms with ids upto 750.
         // Update StatsdStats::kMaxPushedAtomId when atom ids here approach that value.
     }
 
     // Pulled events will start at field 10000.
-    // Next: 10153
+    // Next: 10175
     oneof pulled {
         WifiBytesTransfer wifi_bytes_transfer = 10000 [(module) = "framework"];
         WifiBytesTransferByFgBg wifi_bytes_transfer_by_fg_bg = 10001 [(module) = "framework"];
@@ -897,13 +929,17 @@ message Atom {
         TelephonyNetworkRequestsV2 telephony_network_requests_v2 = 10153 [(module) = "telephony"];
         DeviceTelephonyProperties device_telephony_properties = 10154 [(module) = "telephony"];
         RemoteKeyProvisioningErrorCounts remote_key_provisioning_error_counts = 10155 [(module) = "remoteprovisioner"];
+        IncomingMms incoming_mms = 10157 [(module) = "mms"];
+        OutgoingMms outgoing_mms = 10158 [(module) = "mms"];
+        MultiUserInfo multi_user_info = 10160 [(module) = "framework"];
+        ADPFSystemComponentInfo adpf_system_component_info = 10173 [(module) = "framework"];
+        NotificationMemoryUse notification_memory_use = 10174 [(module) = "sysui"];
     }
 
     // DO NOT USE field numbers above 100,000 in AOSP.
     // Field numbers 100,000 - 199,999 are reserved for non-AOSP (e.g. OEMs) to use.
     // Field numbers 200,000 and above are reserved for future use; do not use them at all.
-
-    reserved 83, 10008, 10036, 10040, 10041;
+    reserved 83, 360 to 363, 492, 10008, 10036, 10040, 10041;
 }
 
 /**
@@ -1035,6 +1071,25 @@ message ScreenStateChanged {
     // New screen state, from frameworks/proto_logging/stats/enums/view/enums.proto.
     optional android.view.DisplayStateEnum state = 1
             [(state_field_option).exclusive_state = true, (state_field_option).nested = false];
+}
+
+/**
+ * Part of the go/activity-security project. Logs information about activity
+ * starts which would be blocked as part of the project.
+ *
+ * Logged from:
+ *  - frameworks/base/services/core/java/com/android/server/wm/ActivityStarter.java
+ */
+message ActivityActionBlocked {
+    optional int32 caller_uid = 1 [(is_uid) = true];
+    optional string caller_activity_class_name = 2;
+    optional int32 target_task_top_activity_uid = 3 [(is_uid) = true];
+    optional string target_task_top_activity_class_name = 4;
+    optional bool target_task_is_different = 5;
+    optional int32 target_activity_uid = 6 [(is_uid) = true];
+    optional string target_activity_class_name = 7;
+    optional string target_intent_action = 8;
+    optional int32 target_intent_flags = 9;
 }
 
 /**
@@ -1949,6 +2004,18 @@ message PluggedStateChanged {
     // Whether the device is plugged in, from frameworks/proto_logging/stats/enums/os/enums.proto.
     optional android.os.BatteryPluggedStateEnum state = 1
             [(state_field_option).exclusive_state = true, (state_field_option).nested = false];
+}
+
+/**
+ * Logs whether the device is docked, and what type of dock it is using.
+ *
+ * Logged from:
+ *   services/core/java/com/android/server/power/PowerManagerService.java
+ */
+message DockStateChanged {
+    // The device dock state, from frameworks/proto_logging/stats/enums/server/enums.proto.
+    optional android.server.DockStateEnum state = 1
+    [(state_field_option).exclusive_state = true, (state_field_option).nested = false];
 }
 
 /**
@@ -3606,6 +3673,81 @@ message BluetoothLeBatchScanReportDelay {
     optional int64 application_report_delay_millis = 2;
 }
 
+message BluetoothLocalVersionsReported {
+    // Chip Manufacturer name
+    optional int32 lmp_manufacturer_name = 1;
+    // LMP Version
+    optional int32 lmp_version = 2;
+    // LMP Subversion
+    optional int32 lmp_subversion = 3;
+    // HCI Version
+    optional int32 hci_version = 4;
+    // HCI Revision
+    optional int32 hci_revision = 5;
+}
+
+message BluetoothRemoteSupportedFeaturesReported {
+    // An identifier that can be used to match events for this device.
+    // The incremental identifier is locally generated and guaranteed not derived
+    // from any globally unique hardware id.
+    // For paired devices, it stays consistent between Bluetooth toggling for the
+    // same remote device.
+    // For unpaired devices, it stays consistent within the same Bluetooth adapter
+    // session for the same remote device.
+    // Default: 0 if the device's metric id is unknown.
+    optional int32 metric_id = 1;
+    // Page of the feature bit masks
+    optional int32 page = 2;
+    // Bit mask of features
+    optional int64 features_page2 = 3;
+    // Connection handle of this connection if available
+    // Range: 0x0000 - 0x0EFF (12 bits)
+    // Default: 0xFFFF if the handle is unknown
+    optional int32 connection_handle = 4;
+}
+
+message BluetoothLocalSupportedFeaturesReported {
+    // Page of the feature bit masks
+    optional int32 page_num = 1;
+    // Bit mask of features
+    optional int64 features_page = 2;
+}
+
+message BluetoothDisconnectionReasonReported {
+    // Disconnection reason
+    optional int32 reason = 1;
+    // An identifier that can be used to match events for this device.
+    // The incremental identifier is locally generated and guaranteed not derived
+    // from any globally unique hardware id.
+    // For paired devices, it stays consistent between Bluetooth toggling for the
+    // same remote device.
+    // For unpaired devices, it stays consistent within the same Bluetooth adapter
+    // session for the same remote device.
+    // Default: 0 if the device's metric id is unknown.
+    optional int32 metric_id = 2;
+    // Connection handle of this connection if available
+    // Range: 0x0000 - 0x0EFF (12 bits)
+    // Default: 0xFFFF if the handle is unknown
+    optional int32 connection_handle = 3;
+}
+
+message BluetoothGattAppInfo {
+    // An index to group connection events by session. It's a counter generated by
+    // each profile. e.g. Gatt server generate such id to identify Gatt apps
+    optional int32 session_index = 1;
+    // An identifier that can be used to match events for this device.
+    // The incremental identifier is locally generated and guaranteed not derived
+    // from any globally unique hardware id.
+    // For paired devices, it stays consistent between Bluetooth toggling for the
+    // same remote device.
+    // For unpaired devices, it stays consistent within the same Bluetooth adapter
+    // session for the same remote device.
+    // Default: 0 if the device's metric id is unknown.
+    optional int32 metric_id = 2;
+    // UID of the GATT app
+    optional int32 uid = 3 [(is_uid) = true];
+}
+
 /**
  * Logs when something is plugged into or removed from the USB-C connector.
  *
@@ -4044,6 +4186,21 @@ message SmartSpaceCardReported {
     optional int32 received_latency_millis = 11;
     // The sub cards.
     optional SmartSpaceSubcards subcards_info = 12 [(log_mode) = MODE_BYTES];
+    // Holds all the dimensions for this event. See go/ss-dimensional-logging for details.
+    optional SmartspaceCardDimensionalInfo dimensional_info = 13 [(log_mode) = MODE_BYTES];
+}
+
+// Holds all the dimensions tied to a Smartspace event.
+message SmartspaceCardDimensionalInfo {
+    repeated SmartspaceFeatureDimension feature_dimensions = 1;
+}
+
+message SmartspaceFeatureDimension {
+    // This maps to an enum value in Android System Intelligence.
+    optional int32 feature_dimension_id = 1;
+
+    // The value for this dimension.
+    optional int32 feature_dimension_value = 2;
 }
 
 /**
@@ -4182,6 +4339,8 @@ message LauncherLayoutSnapshot {
 
   // List of attributes attached to the event.
   optional LauncherAttributes attributes = 19 [(log_mode) = MODE_BYTES];
+
+  optional bool is_kids_mode = 20;
 }
 
 /**
@@ -4212,6 +4371,8 @@ message StyleUIChanged {
     optional int32 first_wallpaper_apply_date_since_setup = 18;
     optional int32 app_launch_count = 19;
     optional int32 color_variant = 20;
+    optional int64 time_elapsed_millis = 21;
+    optional int32 effect_status_code = 22;
 }
 
 /**
@@ -4674,7 +4835,7 @@ message ANROccurredProcessingStarted {
 /**
  * Logs when the vibrator state changes.
  * Logged from:
- *      frameworks/base/services/core/java/com/android/server/VibratorService.java
+ *      frameworks/base/services/core/java/com/android/vibrator/VibratorManagerService.java
  */
 message VibratorStateChanged {
     repeated AttributionNode attribution_node = 1;
@@ -4688,6 +4849,74 @@ message VibratorStateChanged {
     // Duration (in milliseconds) requested to keep the vibrator on.
     // Only applicable for State == ON.
     optional int64 duration_millis = 3;
+}
+
+/**
+ * Logs vibration request.
+ * Logged from:
+ *      frameworks/base/services/core/java/com/android/server/vibrator/VibratorManagerService.java
+ */
+// Next tag: 26
+message VibrationReported {
+  repeated AttributionNode attribution_node = 1;
+
+  enum VibrationType {
+    UNKNOWN = 0;
+    SINGLE = 1;
+    REPEATED = 2;
+    EXTERNAL = 3;
+  }
+
+  // Vibration identifiers for aggregation.
+  optional VibrationType vibration_type = 2;
+  // One of VibrationAttributes.USAGE_* constant values.
+  optional int32 vibration_usage = 3;
+  optional int32 vibration_status = 4;
+
+  // Vibration completion causes.
+  // Flag indicating if the vibration was canceled by the same process
+  // or superseded/canceled by another vibration from the same process.
+  optional bool ended_by_same_uid = 5;
+  // Usage value of the vibration that superseded/canceled this one.
+  optional int32 ended_by_usage = 6;
+  // Usage value of the vibration that was superseded/canceled by this one.
+  optional int32 interrupted_usage = 7;
+
+  // Vibration execution counters.
+  optional int32 repeat_count = 8;
+  // Total duration of this vibration at the service, including setup and cleanup.
+  optional int64 vibration_duration_millis = 9;
+  // Total duration the vibrator motor was active with non-zero amplitude.
+  optional int64 vibrator_on_duration_millis = 10;
+  // Delta between the incoming binder call to vibrate and the first step in the
+  // vibration conductor (closest measure of starting HAL interactions).
+  optional int64 start_latency_millis = 11;
+  // Delta between the HAL reporting the last vibrate operation has completed and
+  // vibrator service has finished the vibration and become idle.
+  optional int64 end_latency_millis = 12;
+
+  // Vibrator hardware HAL API interaction counters.
+  // The majority of vibrations will populate only a couple of the fields below.
+  optional int32 hal_compose_count = 13;
+  optional int32 hal_compose_pwle_count = 14;
+  optional int32 hal_on_count = 15;
+  optional int32 hal_off_count = 16;
+  optional int32 hal_perform_count = 17;
+  optional int32 hal_set_amplitude_count = 18;
+  optional int32 hal_set_external_control_count = 19;
+
+  // Vibrator hardware HAL API constants used (deduped).
+  // Values from CompositionPrimitive.aidl successfully triggered by this vibration at least once.
+  repeated int32 hal_supported_composition_primitives_used = 20;
+  // Values from Effect.aidl triggered by this vibration at least once.
+  repeated int32 hal_supported_effects_used = 21;
+  // Values from CompositionPrimitive.aidl triggered but not supported by the device.
+  repeated int32 hal_unsupported_composition_primitives_used = 22;
+  // Values from Effect.aidl triggered but not supported by the device.
+  repeated int32 hal_unsupported_effects_used = 23;
+  // Vibrator hardware HAL argument sizes (total).
+  optional int32 hal_composition_size = 24;
+  optional int32 hal_pwle_size = 25;
 }
 
 /*
@@ -4817,6 +5046,41 @@ message AppStartOccurred {
 
     // The timestamp(SystemClock#elapsedRealtime()) when starting activity.
     optional int64 activity_start_timestamp_millis = 22;
+
+    /**
+     * The process state of apps, keep in sync with
+     * frameworks/base/core/java/android/app/ActivityManager.java
+     */
+    enum AppProcessState {
+        PROCESS_STATE_UNKNOWN = -1;
+        PROCESS_STATE_PERSISTENT = 0;
+        PROCESS_STATE_PERSISTENT_UI = 1;
+        PROCESS_STATE_TOP = 2;
+        PROCESS_STATE_BOUND_TOP = 3;
+        PROCESS_STATE_FOREGROUND_SERVICE = 4;
+        PROCESS_STATE_BOUND_FOREGROUND_SERVICE = 5;
+        PROCESS_STATE_IMPORTANT_FOREGROUND = 6;
+        PROCESS_STATE_IMPORTANT_BACKGROUND = 7;
+        PROCESS_STATE_TRANSIENT_BACKGROUND = 8;
+        PROCESS_STATE_BACKUP = 9;
+        PROCESS_STATE_SERVICE = 10;
+        PROCESS_STATE_RECEIVER = 11;
+        PROCESS_STATE_TOP_SLEEPING = 12;
+        PROCESS_STATE_HEAVY_WEIGHT = 13;
+        PROCESS_STATE_HOME = 14;
+        PROCESS_STATE_LAST_ACTIVITY = 15;
+        PROCESS_STATE_CACHED_ACTIVITY = 16;
+        PROCESS_STATE_CACHED_ACTIVITY_CLIENT = 17;
+        PROCESS_STATE_CACHED_RECENT = 18;
+        PROCESS_STATE_CACHED_EMPTY = 19;
+        PROCESS_STATE_NONEXISTENT = 20;
+    }
+
+    // The process state of the launching activity prior to the launch.
+    optional AppProcessState process_state = 23;
+
+    // The oom adj score of the launching activity prior to the launch.
+    optional int32 process_oom_adj = 24;
 }
 
 message AppStartCanceled {
@@ -4916,10 +5180,51 @@ message AppCompatStateChanged {
         LETTERBOXED_FOR_ASPECT_RATIO = 5;
     }
 
+    // Position of the letterbox
+    enum Position {
+        UNKNOWN_POSITION = 0;
+        NOT_LETTERBOXED_POSITION = 1;
+        CENTER = 2;
+        LEFT = 3;
+        RIGHT = 4;
+        TOP = 5;
+        BOTTOM = 6;
+    }
+
     // The state that was entered.
     optional State state = 2 [
       (state_field_option).exclusive_state = true,
       (state_field_option).nested = false];
+
+    optional Position letterbox_position = 3;
+}
+
+/**
+ * Logs when an app that is letterboxed changes position.
+ *
+ * Logged from:
+ *   frameworks/base/services/core/java/com/android/server/wm/ActivityMetricsLogger.java
+ */
+
+message LetterboxPositionChanged {
+    // UID of the package that is letterboxed.
+    optional int32 uid = 1 [(is_uid) = true];
+
+    // The new position of the letterbox
+    enum PositionChange {
+        UNKNOWN = 0;
+        CENTER_TO_LEFT = 1;
+        LEFT_TO_CENTER = 2;
+        CENTER_TO_RIGHT= 3;
+        RIGHT_TO_CENTER = 4;
+        CENTER_TO_TOP = 5;
+        TOP_TO_CENTER = 6;
+        CENTER_TO_BOTTOM = 7;
+        BOTTOM_TO_CENTER = 8;
+    }
+
+    optional PositionChange position_change = 2;
+
 }
 
 /**
@@ -5275,6 +5580,12 @@ message LmkKillOccurred {
 
     // Max thrashing levels (workingset_refaults/filecache in %).
     optional int32 max_thrashing = 15;
+
+    // How many active foreground services across the system
+    optional int32 total_foreground_services = 16;
+
+    // How many processes hosting foreground services
+    optional int32 procs_with_foreground_services = 17;
 }
 
 /*
@@ -5468,6 +5779,77 @@ message NotificationChannelModified {
     optional bool is_conversation_demoted = 9;
     // whether this conversation is marked as being a priority
     optional bool is_conversation_priority = 10;
+}
+
+/**
+ * Snapshot of notification memory use aggregated per-package and per-style.
+ * One message for each notification style of each package showing notifications.
+ * Logged from
+ *    frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/notification/logging
+ */
+ message NotificationMemoryUse {
+    // UID if the application (can be mapped to package and version)
+    optional int32 uid = 1;
+    // Integer enum value showing aggregated notification style.
+    optional int32 style = 2;
+    // Number of notifications that were aggregated into this metric.
+    optional int32 count = 3;
+    // Number of notifications with actually inflated views in this metric.
+    optional int32 countWithInflatedViews = 4;
+    // Memory use of small icon Bitmaps in KB.
+    optional int32 smallIconObject = 5;
+    // Count of notifications with small icons as bitmaps.
+    optional int32 smallIconBitmapCount = 6;
+    // Memory use of large icon Bitmaps in KB.
+    optional int32 largeIconObject = 7;
+    // Count of notifications with large icons as bitmaps.
+    optional int32 largeIconBitmapCount = 8;
+    // Memory use of big picture style Bitmaps in KB.
+    optional int32 bigPictureObject = 9;
+    // Count of notifications with big picture images as bitmaps.
+    optional int32 bigPictureBitmapCount = 10;
+    // Complete memory use of extras in Notification object, in KB.
+    optional int32 extras = 11;
+    // Memory use of extenders in KB.
+    optional int32 extenders = 12;
+    // Combined memory use of small icon drawables in views, in KB.
+    optional int32 smallIconViews = 13;
+    // Combined memory use of large icon drawables in views, in KB.
+    optional int32 largeIconViews = 14;
+    // Combined memory use of system icon drawables in views, in KB.
+    optional int32 systemIconViews = 15;
+    // Combined memory use of style drawables (e.g. BigPicture) in views, in KB.
+    optional int32 styleViews = 16;
+    // Combined memory use of custom view drawables in views, in KB.
+    optional int32 customViews = 17;
+    // Extra memory used due to usage of software bitmaps, in KB.
+    optional int32 softwareBitmaps = 18;
+    // How many notifications were actually ever shown to the user.
+    optional int32 seenCount = 19;
+}
+
+/**
+ * Logged when notification are dismissed. If multiple notifications are dismissed together,
+ * this is only logged once per style per UID.
+ * Logged from
+ *    frameworks/base/packages/SystemUI/src/com/android/systemui/statusbar/notification/logging
+ */
+message NotificationDismissed {
+    // UID if the application (can be mapped to package and version)
+    optional int32 uid = 1 [(is_uid) = true];
+    // Integer enum value showing aggregated notification style.
+    optional android.stats.sysui.NotificationStyle style = 2;
+    // Reason for dismissal, based on REASON_ constants in
+    // frameworks/base/core/java/android/service/notification/NotificationListenerService.java
+    optional int32 reason = 3;
+    // Number of notifications dismissed.
+    optional int32 count = 4;
+    // Memory use of Notification object being dismissed, in KB.
+    optional int32 notificationObjectMemoryUse = 5;
+    // Memory use of Notification views being dismissed, in KB.
+    optional int32 notificationViewMemoryUse = 6;
+    // Current memory use of SystemUI, RSS Anon in KB.
+    optional int32 systemUiMemoryUse = 7;
 }
 
 /**
@@ -6075,6 +6457,15 @@ message BroadcastDeliveryEventReported {
 
     /** The start type of the host process. */
     optional ProcessStartType proc_start_type = 5;
+
+    /** The delay in ms from enqueue to dispatch of this intent to the set of receivers. */
+    optional int64 dispatch_delay = 6;
+
+    /** The delay in ms from beginning of dispatch to this specific receiver. */
+    optional int64 receive_delay = 7;
+
+    /** The delay in ms from dispatch to finish the handling of this intent. */
+    optional int64 finish_delay = 8;
 }
 
 /**
@@ -6818,72 +7209,10 @@ message BlobOpened{
  * Logged from:
  *  frameworks/base/core/java/com/android/internal/jank/FrameTracker.java
  *
- * Next Tag: 59
+ * Next Tag: 8
  */
 message UIInteractionFrameInfoReported {
-    enum InteractionType {
-        UNKNOWN = 0;
-        NOTIFICATION_SHADE_SWIPE = 1;
-        SHADE_EXPAND_COLLAPSE_LOCK = 2;
-        SHADE_SCROLL_FLING = 3;
-        SHADE_ROW_EXPAND = 4;
-        SHADE_ROW_SWIPE = 5;
-        SHADE_QS_EXPAND_COLLAPSE = 6;
-        SHADE_QS_SCROLL_SWIPE = 7;
-        LAUNCHER_APP_LAUNCH_FROM_RECENTS = 8;
-        LAUNCHER_APP_LAUNCH_FROM_ICON = 9;
-        LAUNCHER_APP_CLOSE_TO_HOME = 10;
-        LAUNCHER_APP_CLOSE_TO_PIP = 11;
-        LAUNCHER_QUICK_SWITCH = 12;
-        SHADE_HEADS_UP_APPEAR = 13;
-        SHADE_HEADS_UP_DISAPPEAR = 14;
-        SHADE_NOTIFICATION_ADD = 15;
-        SHADE_NOTIFICATION_REMOVE = 16;
-        SHADE_APP_LAUNCH = 17;
-        LOCKSCREEN_PASSWORD_APPEAR = 18;
-        LOCKSCREEN_PATTERN_APPEAR = 19;
-        LOCKSCREEN_PIN_APPEAR = 20;
-        LOCKSCREEN_PASSWORD_DISAPPEAR = 21;
-        LOCKSCREEN_PATTERN_DISAPPEAR = 22;
-        LOCKSCREEN_PIN_DISAPPEAR = 23;
-        LOCKSCREEN_TRANSITION_FROM_AOD = 24;
-        LOCKSCREEN_TRANSITION_TO_AOD = 25;
-        LAUNCHER_OPEN_ALL_APPS = 26;
-        LAUNCHER_ALL_APPS_SCROLL = 27;
-        LAUNCHER_APP_LAUNCH_FROM_WIDGET = 28;
-        SETTINGS_PAGE_SCROLL = 29;
-        LOCKSCREEN_UNLOCK_ANIMATION = 30;
-        SHADE_APP_LAUNCH_FROM_HISTORY_BUTTON = 31;
-        SHADE_APP_LAUNCH_FROM_MEDIA_PLAYER = 32;
-        SHADE_APP_LAUNCH_FROM_QS_TILE = 33;
-        SHADE_APP_LAUNCH_FROM_SETTINGS_BUTTON = 34;
-        STATUS_BAR_APP_LAUNCH_FROM_CALL_CHIP = 35;
-        PIP_TRANSITION = 36;
-        WALLPAPER_TRANSITION = 37;
-        USER_SWITCH = 38;
-        SPLASHSCREEN_AVD = 39;
-        SPLASHSCREEN_EXIT_ANIM = 40;
-        SCREEN_OFF = 41;
-        SCREEN_OFF_SHOW_AOD = 42;
-        ONE_HANDED_ENTER_TRANSITION = 43;
-        ONE_HANDED_EXIT_TRANSITION = 44;
-        UNFOLD_ANIM = 45;
-        SUW_LOADING_TO_SHOW_INFO_WITH_ACTIONS = 46;
-        SUW_SHOW_FUNCTION_SCREEN_WITH_ACTIONS = 47;
-        SUW_LOADING_TO_NEXT_FLOW = 48;
-        SUW_LOADING_SCREEN_FOR_STATUS = 49;
-        SPLIT_SCREEN_ENTER = 50;
-        SPLIT_SCREEN_EXIT = 51;
-        LOCKSCREEN_LAUNCH_CAMERA = 52;
-        SPLIT_SCREEN_RESIZE = 53;
-        SETTINGS_SLIDER = 54;
-        TAKE_SCREENSHOT = 55;
-        VOLUME_CONTROL = 56;
-        BIOMETRIC_PROMPT_TRANSITION = 57;
-        SETTINGS_TOGGLE = 58;
-    }
-
-    optional InteractionType interaction_type = 1;
+    optional android.jank.InteractionType interaction_type = 1;
 
     // Number of frames rendered during the interaction.
     optional int64 total_frames = 2;
@@ -6911,28 +7240,7 @@ message UIInteractionFrameInfoReported {
  *  frameworks/base/core/java/com/android/internal/util/LatencyTracker.java
  */
 message UIActionLatencyReported {
-    enum ActionType {
-        UNKNOWN = 0;
-        ACTION_EXPAND_PANEL = 1;
-        ACTION_TOGGLE_RECENTS = 2;
-        ACTION_FINGERPRINT_WAKE_AND_UNLOCK = 3;
-        ACTION_CHECK_CREDENTIAL = 4;
-        ACTION_CHECK_CREDENTIAL_UNLOCKED = 5;
-        ACTION_TURN_ON_SCREEN = 6;
-        ACTION_ROTATE_SCREEN = 7;
-        ACTION_FACE_WAKE_AND_UNLOCK = 8;
-        ACTION_START_RECENTS_ANIMATION = 9;
-        ACTION_ROTATE_SCREEN_CAMERA_CHECK = 10;
-        ACTION_ROTATE_SCREEN_SENSOR = 11;
-        ACTION_LOCKSCREEN_UNLOCK = 12;
-        ACTION_USER_SWITCH = 13;
-        ACTION_SWITCH_DISPLAY_UNFOLD = 14;
-        ACTION_UDFPS_ILLUMINATE = 15;
-        ACTION_SHOW_BACK_ARROW = 16;
-        ACTION_LOAD_SHARE_SHEET = 17;
-    }
-
-    optional ActionType action = 1;
+    optional android.jank.ActionType action = 1;
 
     optional int64 latency_millis = 2;
 }
@@ -9629,7 +9937,10 @@ message NfcStateChanged {
         ON_LOCKED = 3; // Secure Nfc enabled.
         CRASH_RESTART = 4; // NfcService watchdog timeout restart.
     }
-    optional State state = 1;
+    optional State state = 1 [
+        (state_field_option).exclusive_state = true,
+        (state_field_option).nested = false
+    ];
 }
 
 /**
@@ -9931,11 +10242,14 @@ message SplitscreenUIChanged {
     // The reason for entering splitscreen
     enum EnterReason {
         UNKNOWN_ENTER = 0;
-        OVERVIEW = 1;
+        OVERVIEW = 1; // Deprecated, use LAUNCHER
         DRAG_LEFT = 2;
         DRAG_TOP = 3;
         DRAG_RIGHT = 4;
         DRAG_BOTTOM = 5;
+        LAUNCHER = 6;
+        MULTI_INSTANCE = 7;
+        NOTIFICATIONS = 8;
     }
 
     // The reason for exiting splitscreen
@@ -9949,6 +10263,9 @@ message SplitscreenUIChanged {
         ROOT_TASK_VANISHED = 6;
         APP_FINISHED = 7;
         APP_DOES_NOT_SUPPORT_MULTIWINDOW = 8;
+        CHILD_TASK_ENTER_PIP = 9;
+        RECREATE_SPLIT = 10;
+        FULLSCREEN_SHORTCUT = 11;
     }
 
     // The event action
@@ -10052,7 +10369,8 @@ message BubbleDeveloperErrorReported {
 }
 
 /**
- * Logs that a constraint for a scheduled job has changed.
+ * Logs that a job-specific constraint for a scheduled job has changed.
+ * DeviceWideJobConstraintChanged will cover constraints that are normally the same for all jobs.
  *
  * Logged from:
  *     frameworks/base/services/core/java/com/android/server/job/controllers/JobStatus.java
@@ -10071,6 +10389,29 @@ message ScheduledJobConstraintChanged {
         SATISFIED = 2;
     }
     optional State state = 4;
+}
+
+/**
+ * Logs that a device-state-level JobScheduler constraint has changed. This doesn't take individual
+ * job or app characteristics into account. Individual jobs may have a different satisfaction value
+ * based on special policies. Individual job constraints (eg. connectivity or prefetch) are not
+ * logged in this atom.
+ *
+ * Logged from:
+ *     frameworks/base/services/core/java/com/android/server/job/controllers/<*>.java
+ */
+message DeviceWideJobConstraintChanged {
+    optional com.android.server.job.ConstraintEnum constraint = 1;
+
+    enum State {
+        UNKNOWN = 0;
+        UNSATISFIED = 1;
+        SATISFIED = 2;
+    }
+    optional State state = 2 [
+        (state_field_option).exclusive_state = true,
+        (state_field_option).nested = false
+    ];
 }
 
 /**
@@ -10167,6 +10508,16 @@ message ProcessStartTime {
     }
 
     optional HostingTypeId hosting_type_id = 11;
+
+    enum TriggerType {
+        TRIGGER_TYPE_UNKNOWN = 0;
+        TRIGGER_TYPE_ALARM = 1;
+        TRIGGER_TYPE_PUSH_MESSAGE = 2;
+        TRIGGER_TYPE_PUSH_MESSAGE_OVER_QUOTA = 3;
+        TRIGGER_TYPE_JOB = 4;
+    }
+
+    optional TriggerType trigger_type = 12;
 }
 
 /**
@@ -13873,6 +14224,25 @@ message AppFreezeChanged {
 
     // Time since last unfrozen.
     optional int64 time_unfrozen_millis = 4;
+
+    // The list of reason should be kept in sync with @OomAdjReason in OomAdjuster.java.
+    enum OomAdjReason {
+        NONE = 0;
+        ACTIVITY = 1;
+        FINISH_RECEIVER = 2;
+        START_RECEIVER = 3;
+        BIND_SERVICE = 4;
+        UNBIND_SERVICE = 5;
+        START_SERVICE = 6;
+        GET_PROVIDER = 7;
+        REMOVE_PROVIDER = 8;
+        UI_VISIBILITY = 9;
+        ALLOWLIST = 10;
+        PROCESS_BEGIN = 11;
+        PROCESS_END = 12;
+    }
+
+    optional OomAdjReason unfreeze_reason = 5;
 }
 
 /**
@@ -13995,6 +14365,9 @@ message VoiceCallSession {
 
     // Duration after the call was connected.
     optional android.telephony.CallDuration call_duration = 33;
+
+    // Last known Radio access technology (RAT).
+    optional android.telephony.NetworkTypeEnum last_known_rat = 34;
 }
 
 /**
@@ -14243,7 +14616,11 @@ message IncomingSms {
     optional int32 carrier_id = 13;
 
     // Random message ID.
+    // If the value of count is greater than 1, the message_id represents only one of the messages.
     optional int64 message_id = 14;
+
+    // Number of messages with the same properties (see message_id for exception)
+    optional int32 count = 15;
 }
 
 /**
@@ -14295,13 +14672,21 @@ message OutgoingSms {
     optional int32 carrier_id = 11;
 
     // Random message ID.
+    // If the value of count is greater than 1, the message_id represents only one of the messages.
     optional int64 message_id = 12;
 
     // Retry count: 0 for the first attempt and then increasing for each attempt.
+    // If the value of count is greater than 1, the retry_id represents the value associated with
+    // the message defined by message_id.
     optional int32 retry_id = 13;
 
     // Time in milliseconds to complete the SMS send to the network.
+    // If the value of count is greater than 1, this field measures the average time interval.
     optional int64 interval_millis = 14;
+
+    // Number of messages with the same properties (see message_id, retry_id and latency_millis for
+    // exceptions)
+    optional int32 count = 15;
 }
 
 /**
@@ -14468,6 +14853,10 @@ message DataCallSession {
 
     // Reason why the data call handover failed, as in RIL_DataCallFailCause from ril.h
     repeated int32 handover_failure_causes = 20;
+
+    // For each int32, the lower 16 bits represent the source RAT while the upper 16 bits indicate
+    // the target RAT of the failed handover.
+    repeated int32 handover_failure_rat = 21;
 }
 
 /**
@@ -15098,6 +15487,20 @@ message UserInfo {
     optional bool is_user_running_unlocked = 7;
 }
 
+
+/**
+ * The MultiUserInfo information about maximum supported users on the device.
+ *
+ * This will be pulled from
+ *     frameworks/base/services/core/java/com/android/server/pm/UserManagerService.java
+ */
+message MultiUserInfo {
+    // Maximum users supported on the device
+    optional int32 max_supported_users = 1;
+    // Whether multi user setting is on.
+    optional bool multi_user_setting_on = 2;
+}
+
 /**
  * Logs when accessibility shortcut clicked.
  *
@@ -15338,6 +15741,133 @@ message AudioPowerUsageDataReported {
 }
 
 /**
+ * Logs the Spatializer capability when the Spatializer is created.
+ *
+ * We expect this to occur only once on a healthy system,
+ * when audioserver is initialized.
+ *
+ * On devices that do not support spatialization,
+ * SpatializerLevel returns SPATIALIZER_LEVEL_NONE only.
+ *
+ * Logged from:
+ *   frameworks/av/services/mediametrics/AudioAnalytics.cpp
+ */
+message MediametricsSpatializerCapabilitiesReported {
+    // Available head tracking modes
+    repeated android.media.audio.HeadTrackingMode head_tracking_modes = 1;
+
+    // Available spatializer levels
+    repeated android.media.audio.SpatializerLevel spatializer_levels = 2;
+
+    // Available spatializer modes
+    repeated android.media.audio.SpatializerMode spatializer_modes = 3;
+
+    // Available channel masks, with each channel position bitwise ORed.
+    // One or more bits from
+    // system/media/audio/include/system/audio-hal-enums.h
+    // audio_channel_mask_t, representing the channel configuration
+    // of AudioTrack data.
+    //
+    // Generally the most populated channel_mask is selected for use.
+    repeated int64 channel_masks = 4;
+}
+
+/**
+ * Logs when Spatializer is enabled or disabled for a device.
+ *
+ * The event field indicates the reason for enabling or disabling:
+ * through the Settings UI, startup/boot, or new device detection.
+ *
+ * The presence of this message indicates that the audio device type
+ * supports Spatialization; this is generally a fixed
+ * property of the platform and depends if the device type is considered
+ * BINAURAL or TRANSAURAL, and the Spatializer support for it.
+ *
+ * This logs existing saved state on BOOT and changes afterwards.
+ * Due to rpc to the MediaMetrics service which generates the atom,
+ * the timestamp of the atom may have a slight delay.
+ *
+ * Logged from:
+ *   frameworks/av/services/mediametrics/AudioAnalytics.cpp
+ */
+message MediametricsSpatializerDeviceEnabledReported {
+    // Device type enumeration, e.g. BUILTIN_SPEAKER, BT_A2DP, etc.
+    optional android.media.audio.AudioDeviceInfoType type = 1;
+
+    // The event field indicates the reason for enabling or disabling:
+    // NORMAL: from Settings UI.
+    // BOOT: on startup/boot.
+    // FIRST: on new device detection.
+    optional android.media.audio.SpatializerSettingEvent event = 2;
+
+    // Whether the spatializer is enabled on that device.
+    // This triggers only on a change of state.
+    // If multiple devices share the same type (e.g. bluetooth headsets),
+    // they will register separate messages.
+    optional bool enabled = 3;
+}
+
+/**
+ * Logs whether the HeadTracker is enabled for a device.
+ *
+ * This only changes if there is a HeadTracker associated with the device.
+ *
+ * This logs existing saved state on BOOT and changes afterwards.
+ * Due to rpc to the MediaMetrics service which generates the atom,
+ * the timestamp of the atom may have a slight delay.
+ *
+ * Logged from:
+ *   frameworks/av/services/mediametrics/AudioAnalytics.cpp
+ */
+message MediametricsHeadTrackerDeviceEnabledReported {
+    // Device type enumeration, e.g. BUILTIN_SPEAKER, BT_A2DP, etc.
+    optional android.media.audio.AudioDeviceInfoType type = 1;
+
+    // The event field indicates the reason for enabling or disabling:
+    // NORMAL: from Settings UI.
+    // BOOT: on startup/boot.
+    // FIRST: on new device detection.
+    optional android.media.audio.SpatializerSettingEvent event = 2;
+
+    // Whether the head tracker was enabled or disabled on that device.
+    // This triggers only on a change of state.
+    // If multiple devices share the same type (e.g. bluetooth headsets),
+    // they will register separate messages.
+    optional bool enabled = 3;
+}
+
+/**
+ * Logs whether the HeadTracker is supported for a device.
+ *
+ * Generally a fixed property of the device, but it is possible
+ * that the HeadTracker sensor might be turned off
+ * or be temporarily unavailable.
+ *
+ * This logs existing saved state on BOOT and changes afterwards.
+ * Due to rpc to the MediaMetrics service which generates the atom,
+ * the timestamp of the atom may have a slight delay.
+ *
+ * Logged from:
+ *   frameworks/av/services/mediametrics/AudioAnalytics.cpp
+ */
+message MediametricsHeadTrackerDeviceSupportedReported {
+    // Device type enumeration, e.g. BUILTIN_SPEAKER, BT_A2DP, etc.
+    optional android.media.audio.AudioDeviceInfoType type = 1;
+
+    // The event field indicates the reason for enabling or disabling:
+    // NORMAL: on sensor change.
+    // BOOT: on startup/boot.
+    // FIRST: on new device detection.
+    optional android.media.audio.SpatializerSettingEvent event = 2;
+
+    // Whether the head tracker is supported on that device.
+    // This triggers only on a change of state.
+    // If multiple devices share the same type (e.g. bluetooth headsets),
+    // they will register separate messages.
+    optional bool supported = 3;
+}
+
+/**
   * Pulls bytes transferred over WiFi and mobile networks sliced by uid, is_metered, and tag.
   *
   * Pulled from:
@@ -15415,6 +15945,9 @@ message MediaOutputOpInteractionReported {
 
     // Type of device that interaction with.
     optional android.app.settings.mediaoutput.MediumType target = 2;
+
+    // The package name of an application whose media session is being switched.
+    optional string media_session_package_name= 3;
 }
 
 /**
@@ -17220,6 +17753,40 @@ message WifiPnoScanReported {
     }
 
     optional State state = 1;
+}
+
+/**
+ * Logs when an airplane mode session happens.
+ *
+ * Logged from:
+ *   packages/modules/Wifi/service/java/com/android/server/wifi/WifiMetrics.java
+ *   packages/modules/Bluetooth/service/java/com/android/server/bluetooth/BluetoothAirplaneModeListener.java
+ */
+message AirplaneModeSessionReported {
+    enum PackageName {
+        WIFI = 0;
+        BLUETOOTH = 1;
+    }
+    // Module recording the airplane mode session
+    optional PackageName package_name = 1;
+    // State of the module before entering airplane mode
+    // False - module off
+    // True - module on
+    optional bool previous_state = 2;
+    // State of the module at the beginning of airplane mode
+    optional bool entering_state = 3;
+    // State of the module at the end of airplane mode
+    optional bool exiting_state = 4;
+    // Whether the user has activated the feature by
+    // toggling the module in airplane mode
+    optional bool feature_active = 5;
+    // Whether the user toggled the module during current airplane mode
+    optional bool user_toggled = 6;
+    // Whether the user toggled the module within one minute
+    optional bool user_toggled_within_minute = 7;
+    // Whether media profile was connected before entering airplane mode
+    // Only applicable to the Bluetooth module
+    optional bool media_profile_connected = 8;
 }
 
 /**
@@ -19804,6 +20371,10 @@ message PerSimStatus {
     // APN type bitmask of the APNs added or modified by user:
     // @ApnType in frameworks/base/telephony/java/android/telephony/Annotation.java.
     optional int32 user_modified_apn_type_bitmask = 16;
+
+    // Indicates the unmetered networks
+    // Bitmask is encoded as TelephonyManager#NetworkTypeBitMask.
+    optional int64 unmetered_networks = 17;
 }
 
 /*
@@ -20101,6 +20672,34 @@ message LauncherLatency {
     optional int64 latency_in_millis = 4;
     optional int32 type = 5;
     optional int32 query_length = 6 [default = -1];
+    optional int32 sub_event_type = 7;
+}
+
+/**
+ * Logs for Launcher Impression logging.
+ *
+ * Logged from:
+ *      vendor/unbundled_google/packages/NexusLauncher
+ */
+message LauncherImpressionEvent {
+    // The event id generated from go/uievents
+    optional int32 event_id = 1;
+    // The instance id to track multiple partial impression event.
+    optional int32 instance_id = 2;
+
+    // The state defines the surface where the impression is being logged.
+    optional int32 state = 3;
+    optional int32 query_length = 4 [default = -1];
+
+    // ResultType of the search result as defined in frameworks/libs/systemui/searchuilib/src/com/android/app/search/ResultType.java
+    repeated int32 result_type = 5;
+
+    // Number of results of corresponding result_type.
+    repeated int32 result_count = 6;
+
+    // If the corresponding result_type is above or below keyboard.
+    // If 50% of result is visible, then is_above_keyboard = true
+    repeated bool is_above_keyboard = 7;
 }
 
 /*
@@ -20186,6 +20785,9 @@ message HotwordDetectionServiceInitResultReported {
         CALLBACK_INIT_STATE_UNKNOWN_TIMEOUT = 4;
     }
     optional Result result = 2;
+
+    // The UID for which assistant application is active.
+    optional int32 uid = 3 [(is_uid) = true];
 }
 
 /**
@@ -20210,6 +20812,9 @@ message HotwordDetectionServiceRestarted {
         CRASH = 3;
     }
     optional Reason reason = 2;
+
+    // The UID for which assistant application is active.
+    optional int32 uid = 3 [(is_uid) = true];
 }
 
 /**
@@ -20258,6 +20863,9 @@ message HotwordDetectorKeyphraseTriggered {
     }
     // What result after detecting.
     optional Result result = 2;
+
+    // The UID for which assistant application is active.
+    optional int32 uid = 3 [(is_uid) = true];
 }
 
 /**
@@ -20290,6 +20898,86 @@ message HotwordDetectorEvents {
 
         // Indicates that no starting recognition after creating the detector.
         DID_NOT_CALL_START_RECOGNITION = 6;
+
+        // Indicates that the system disconnected the service.
+        ON_DISCONNECTED = 7;
+
+        // Indicates that the application called the updateState function.
+        APP_REQUEST_UPDATE_STATE = 8;
+
+        // Indicates that starting to listen software detection.
+        START_SOFTWARE_DETECTION = 9;
+
+        // Indicates that starting to listen external source detection.
+        START_EXTERNAL_SOURCE_DETECTION = 10;
+
+        // Indicates that the external source detection was detected.
+        EXTERNAL_SOURCE_DETECTED = 11;
+
+        // Indicates that the external source detection was not detected.
+        EXTERNAL_SOURCE_REJECTED = 12;
+
+        // Indicates that the system got the security exception when handling external
+        // source detected callback.
+        EXTERNAL_SOURCE_DETECT_SECURITY_EXCEPTION = 13;
+
+        // Indicates that the callback onStatusReported was not invoked successfully.
+        CALLBACK_ON_STATUS_REPORTED_EXCEPTION = 14;
+
+        // Indicates that the callback onError was not invoked successfully.
+        CALLBACK_ON_ERROR_EXCEPTION = 15;
+
+        // Indicates that the callback onRejected was not invoked successfully.
+        CALLBACK_ON_REJECTED_EXCEPTION = 16;
+
+        // Indicates that the callback onDetected was not invoked successfully.
+        CALLBACK_ON_DETECTED_EXCEPTION = 17;
+
+        // Indicates that the callback onProcessRestarted was not invoked successfully.
+        CALLBACK_ON_PROCESS_RESTARTED_EXCEPTION = 18;
+
+        // Indicates that the updateState was not invoked successfully.
+        CALL_UPDATE_STATE_EXCEPTION = 19;
+
+        // Indicates that the audio egress starts.
+        AUDIO_EGRESS_START = 20;
+
+        // Indicates that the audio egress ends.
+        AUDIO_EGRESS_END = 21;
+
+        // Indicates that the audio egress got interrupted exception.
+        AUDIO_EGRESS_INTERRUPTED_EXCEPTION = 22;
+
+        // Indicates that the client is not granted permission to access audio
+        // egress.
+        AUDIO_EGRESS_NO_PERMISSION = 23;
+
+        // Indicates that the client is inactive over a period of time.
+        AUDIO_EGRESS_INACTIVE_CLIENT = 24;
+
+        // Indicates that the HotwordDetectionService is inactive over a period
+        // of time.
+        AUDIO_EGRESS_INACTIVE_HOTWORD_DETECTION_SERVICE = 25;
+
+        // Indicates that the list of audio stream is empty.
+        AUDIO_EGRESS_EMPTY_AUDIO_STREAM_LIST = 26;
+
+        // Indicates that there is no data from the system audio stream.
+        AUDIO_EGRESS_SOURCE_IS_EMPTY = 27;
+
+        // Indicates that the copy buffer size the client sets is illegal.
+        AUDIO_EGRESS_ILLEGAL_COPY_BUFFER_SIZE = 28;
+
+        // Indicates that the audio egress is closed with error from the system.
+        AUDIO_EGRESS_CLOSE_ERROR_FROM_SYSTEM = 29;
+
+        // Indicates that the audio egress is closed with error from the client
+        // side.
+        AUDIO_EGRESS_CLOSE_ERROR_FROM_CLIENT = 30;
+
+        // Indicates that the audio egress is closed with error from the
+        // HotwordDetectionService.
+        AUDIO_EGRESS_CLOSE_ERROR_FROM_HOTWORD_DETECTION_SERVICE = 31;
     }
     optional Event event = 2;
 
@@ -20557,6 +21245,42 @@ message RecentPermissionDecisionsInteracted {
 }
 
 /**
+ * Logs failure reason when MmsSmsProvider#getThreadId fails to return a threadId
+ */
+message MmsSmsProviderGetThreadIdFailed {
+    enum FailureCode {
+        FAILURE_UNKNOWN = 0;
+        // Did not return a threadId due to recipients being passed in
+        FAILURE_NO_RECIPIENTS = 1;
+        FAILURE_FIND_OR_CREATE_THREAD_ID_SQL = 2;
+        // Found more than one threadId for the given of recipients
+        FAILURE_MULTIPLE_THREAD_IDS_FOUND = 3;
+    }
+
+    optional FailureCode failure_code = 1;
+}
+
+/**
+ * Logs failure reason when MmsSmsDatabaseHelperOnUpgradeFailed fails on an upgrade step
+ */
+message MmsSmsDatabaseHelperOnUpgradeFailed {
+    enum FailureCode {
+        FAILURE_UNKNOWN = 0;
+        FAILURE_IO_EXCEPTION = 1;
+        FAILURE_SECURITY_EXCEPTION = 2;
+        FAILURE_SQL_EXCEPTION = 3;
+    }
+
+    // Database version being upgraded from
+    optional int32 old_version = 1;
+    // Database version being upgraded to
+    optional int32 current_version = 2;
+    // Version number of the database upgrade step that failed
+    optional int32 upgrade_failed_to_version = 3;
+    optional FailureCode failure_code = 4;
+}
+
+/**
  * Logs for task manager events
  *
  * Logged from SystemUI
@@ -20604,6 +21328,13 @@ message AutofillPresentationEventReported {
         6;  // Session was prematurely committed. This can happen due to various
             // reasons, eg: app developers calling commit() earlier than when
             // they should.
+    NONE_SHOWN_FILL_REQUEST_FAILED =
+        7; // Autofill provider request failed. Different from timeout.
+    NONE_SHOWN_NO_FOCUS =
+        8; // Autofill provider request was triggered pre-focus. User never
+           // focussed on autofillable fields. This can happen for FillDialog
+           // where we trigger fill request at layout time.
+
   }
 
   // Id number which increases for each subsequent request.
@@ -20640,6 +21371,45 @@ message AutofillPresentationEventReported {
 
   // How the dataset is supposed to be shown to the user
   optional AutofillDisplayPresentationType display_presentation_type = 9;
+
+  // Autofill Service Provider's uid
+  optional int32 autofill_service_uid = 10 [(is_uid) = true];
+
+  // Inline suggestion host's uid. Populated only when
+  // AutofillDisplayPresentationType = INLINE
+  optional int32 inline_suggestion_host_uid = 11 [(is_uid) = true];
+
+  // Whether a new request was triggered or alternatively served from cached
+  // response.
+  optional bool is_request_triggered = 12;
+
+  // Timestamps are in milliseconds, relative to when the Session was created
+  // For example, if timestamp has a value = 100, the event was triggered
+  // 100ms after the session was created.
+  // Since these are relative to Session creation, you can subtract events to
+  // get the latency duration between events.
+  // t1 = 100
+  // t2 = 300
+  // duration = t2 - t1 = 200ms
+  // ------------------------------------------------------------------------
+  // Timestamp of when FillRequest is sent to Autofill provider
+  // This is also the latency of when a field is focused to Framework sending a FillRequest
+  optional int32 fill_request_sent_timestamp_ms = 13;
+
+  // Timestamp of when Autofill provider returns a FillResponse
+  // The latency of the Autofill provider IPC can be calculated
+  // by fillResponseReceivedTimestampMs - fillRequestSentTimestampMs
+  optional int32 fill_response_received_timestamp_ms = 14;
+
+  // Timestamp of when FillResponse is sent to the IME/Dropdown handler/Fill Dialog UI
+  // The latency of processing provider FillResponse to when suggestions are sent to be rendered
+  // can be calculated by suggestionSentTimestampMs - fillResponseReceivedTimestampMs
+  optional int32 suggestion_sent_timestamp_ms = 15;
+
+  // Timestamp of when the suggestion is shown
+  // The latency of showing suggestions can be calculated by
+  // suggestionPresentedTimestampMs - suggestionSentTimestampMs
+  optional int32 suggestion_presented_timestamp_ms = 16;
 }
 
 // Tells how Autofill dataset was/will-be displayed.
@@ -20709,100 +21479,6 @@ message TelephonyAnomalyDetected {
     // UUID of the anomaly, as generated by android.telephony.AnomalyReporter
     optional int64 event_id_lsb = 2;
     optional int64 event_id_msb = 3;
-}
-/*
- * Pushed atom logged by ONS service.
- */
-message OnsOpportunisticEsimProvisioningComplete {
-    enum ResultCode {
-        // Unknown
-        RESULT_UNKNOWN = 0;
-
-        // Operation was successful.
-        RESULT_SUCCESS = 1;
-
-        // Device capabilities not met such as eSIM and MultiSIM not supported.
-        RESULT_DEVICE_NOT_CAPABLE = 2;
-
-        // Internet connection is not available while trying to download opportunistic eSIM.
-        RESULT_INTERNET_NOT_AVAILABLE = 3;
-
-        // Error occurred while switching device from Single to MultiSIM mode.
-        RESULT_SWITCH_TO_MULTISIM_FAILED = 4;
-
-        // Connection error occurred while downloading opportunistic eSIM from SMDP server.
-        RESULT_CONNECTION_ERROR = 5;
-
-        // Download failed because there is no sufficient storage available in eUICC memory.
-        RESULT_MEMORY_FULL = 6;
-
-        // Installation of downloaded eSIM failed.
-        RESULT_INSTALL_ESIM_PROFILE_FAILED = 7;
-
-        // Unresolvable errors such as Invalid SMDP address or activation code.
-        RESULT_UNRESOLVABLE_ERROR = 8;
-
-        //Auto provisioning disabled
-        RESULT_AUTO_PROVISIONING_DISABLED = 9;
-    }
-
-    // CBRS carrier id. Filled only while reporting failure cases.
-    optional int32 carrier_id = 1;
-
-    // carrier id of the opportunistic eSIM downloaded from the SMDP server.
-    // Filled only while reporting failure cases.
-    optional int32 opportunistic_esim_carrier_id = 2;
-
-    // Flag to indicate that the data connection was used for downloading.
-    optional bool is_mobile_data_used = 3;
-
-    // Error code occurred during the above operation.
-    optional ResultCode error_code = 4;
-
-    // Retry count of the above operation.
-    optional int32 retry_count = 5;
-
-    // Detailed error code.
-    optional int32 detailed_error_code = 6;
-}
-
-/**
- * Logs when a background dexopt job is ended.
- *
- * Logged from:
- *   frameworks/base/services/core/java/com/android/server/pm/BackgroundDexOptService.java
- */
-message BackgroundDexoptJobEnded {
-    // Corresponds to `BackgroundDexOptService.Status`, except for
-    // `STATUS_JOB_FINISHED`.
-    enum Status {
-        STATUS_UNKNOWN = 0;
-
-        // The job has finished. This value is used even if some packages have
-        // failed compilation during the job. (Corresponds to either
-        // `BackgroundDexOptService.Status.STATUS_OK` or
-        // `BackgroundDexOptService.Status.STATUS_DEX_OPT_FAILED`.)
-        STATUS_JOB_FINISHED = 1;
-
-        STATUS_ABORT_BY_CANCELLATION = 2;
-        STATUS_ABORT_NO_SPACE_LEFT = 3;
-        STATUS_ABORT_THERMAL = 4;
-        STATUS_ABORT_BATTERY = 5;
-    }
-
-    optional Status status = 1;
-
-    // If `status` is `STATUS_ABORT_BY_CANCELLATION`, the reason of the
-    // cancellation.
-    optional android.app.job.StopReasonEnum cancellation_reason = 2;
-
-    // The duration of the job run, in milliseconds, not counting time spent in
-    // sleep.
-    optional int64 duration_ms = 3;
-
-    // The duration of the job run, in milliseconds, including time spent in
-    // sleep.
-    optional int64 duration_including_sleep_ms = 4;
 }
 
 /**
@@ -20954,4 +21630,490 @@ message RemoteKeyProvisioningErrorCounts {
     // How many bytes of data have been sent that resulted in errors. These
     // bytes count against an error budget, so it's important to track.
     optional int32 error_bytes = 3;
+}
+
+/*
+ * Pushed atom logged by ONS service.
+ */
+message OnsOpportunisticEsimProvisioningComplete {
+    enum ResultCode {
+        // Unknown
+        RESULT_UNKNOWN = 0;
+
+        // Operation was successful.
+        RESULT_SUCCESS = 1;
+
+        // Device capabilities not met such as eSIM and MultiSIM not supported.
+        RESULT_DEVICE_NOT_CAPABLE = 2;
+
+        // Internet connection is not available while trying to download opportunistic eSIM.
+        RESULT_INTERNET_NOT_AVAILABLE = 3;
+
+        // Error occurred while switching device from Single to MultiSIM mode.
+        RESULT_SWITCH_TO_MULTISIM_FAILED = 4;
+
+        // Connection error occurred while downloading opportunistic eSIM from SMDP server.
+        RESULT_CONNECTION_ERROR = 5;
+
+        // Download failed because there is no sufficient storage available in eUICC memory.
+        RESULT_MEMORY_FULL = 6;
+
+        // Installation of downloaded eSIM failed.
+        RESULT_INSTALL_ESIM_PROFILE_FAILED = 7;
+
+        // Unresolvable errors such as Invalid SMDP address or activation code.
+        RESULT_UNRESOLVABLE_ERROR = 8;
+
+        // Auto provisioning disabled
+        RESULT_AUTO_PROVISIONING_DISABLED = 9;
+
+        // eSIM provisioning failed
+        RESULT_ESIM_PROVISIONING_FAILED = 10;
+    }
+
+    // CBRS carrier id. Filled only while reporting failure cases.
+    optional int32 carrier_id = 1;
+
+    // carrier id of the opportunistic eSIM downloaded from the SMDP server.
+    // Filled only while reporting failure cases.
+    optional int32 opportunistic_esim_carrier_id = 2;
+
+    // Flag to indicate that the data connection was used for downloading.
+    optional bool is_mobile_data_used = 3;
+
+    // Error code occurred during the above operation.
+    optional ResultCode error_code = 4;
+
+    // Retry count of the above operation.
+    optional int32 retry_count = 5;
+
+    // Detailed error code.
+    optional int32 detailed_error_code = 6;
+}
+
+/**
+ * Logs when a background dexopt job is ended.
+ *
+ * Logged from:
+ *   frameworks/base/services/core/java/com/android/server/pm/BackgroundDexOptService.java
+ */
+message BackgroundDexoptJobEnded {
+    // Corresponds to `BackgroundDexOptService.Status`, except for
+    // `STATUS_JOB_FINISHED`.
+    enum Status {
+        STATUS_UNKNOWN = 0;
+
+        // The job has finished. This value is used even if some packages have
+        // failed compilation during the job. (Corresponds to either
+        // `BackgroundDexOptService.Status.STATUS_OK` or
+        // `BackgroundDexOptService.Status.STATUS_DEX_OPT_FAILED`.)
+        STATUS_JOB_FINISHED = 1;
+
+        STATUS_ABORT_BY_CANCELLATION = 2;
+        STATUS_ABORT_NO_SPACE_LEFT = 3;
+        STATUS_ABORT_THERMAL = 4;
+        STATUS_ABORT_BATTERY = 5;
+    }
+
+    optional Status status = 1;
+
+    // If `status` is `STATUS_ABORT_BY_CANCELLATION`, the reason of the
+    // cancellation.
+    optional android.app.job.StopReasonEnum cancellation_reason = 2;
+
+    // The duration of the job run, in milliseconds, not counting time spent in
+    // sleep.
+    optional int64 duration_ms = 3;
+
+    // The duration of the job run, in milliseconds, including time spent in
+    // sleep.
+    optional int64 duration_including_sleep_ms = 4;
+}
+
+/**
+ * Pulls information for a single incoming MMS.
+ *
+ * Each pull creates multiple atoms, one for each MMS.
+ * The sequence is randomized when pulled.
+ *
+ * Pulled from:
+ *   packages/services/Mms/src/com/android/mms/service/metrics/MmsMetricsCollector.java
+ */
+message IncomingMms {
+    // Radio access technology (RAT) used for downloading the MMS.
+    // It can be IWLAN in case of IMS.
+    // RAT is logged at the end of the download.
+    optional android.telephony.NetworkTypeEnum rat = 1;
+
+    // Indicate a specific result handling the MMS.
+    optional android.mms.MmsResultEnum result = 2;
+
+    // Roaming type when MMS was received.
+    optional android.telephony.RoamingTypeEnum roaming = 3;
+
+    // Index of the SIM used, 0 for single-SIM devices.
+    optional int32 sim_slot_index = 4;
+
+    // Whether the device was in multi-SIM mode (with multiple active SIM profiles).
+    optional bool is_multi_sim = 5;
+
+    // Whether the MMS was received with an eSIM profile.
+    optional bool is_esim = 6;
+
+    // Carrier ID of the SIM card used for the MMS.
+    // See https://source.android.com/devices/tech/config/carrierid.
+    optional int32 carrier_id = 7;
+
+    // Average time in milliseconds to download MMS from the network.
+    optional int64 avg_interval_millis = 8;
+
+    // Total number of MMS having same configuration.
+    optional int64 mms_count = 9;
+
+    // Retry count: 0 for the first attempt and then increasing for each attempt.
+    optional int32 retry_id = 10;
+
+    // Whether MmsService or carrier app downloaded the MMS from the network.
+    optional bool handled_by_carrier_app = 11;
+}
+
+/**
+ * Pulls information for a single outgoing MMS.
+ *
+ * Each pull creates multiple atoms, one for each MMS.
+ * The sequence is randomized when pulled.
+ *
+ * Pulled from:
+ *   packages/services/Mms/src/com/android/mms/service/metrics/MmsMetricsCollector.java
+ */
+message OutgoingMms {
+    // Radio access technology (RAT) used for uploading the MMS.
+    // It can be IWLAN in case of IMS.
+    // RAT is logged at the end of the upload.
+    optional android.telephony.NetworkTypeEnum rat = 1;
+
+    // Indicate a specific result handling the MMS.
+    optional android.mms.MmsResultEnum result = 2;
+
+    // Roaming type when MMS was received.
+    optional android.telephony.RoamingTypeEnum roaming = 3;
+
+    // Index of the SIM used, 0 for single-SIM devices.
+    optional int32 sim_slot_index = 4;
+
+    // Whether the device was in multi-SIM mode (with multiple active SIM profiles).
+    optional bool is_multi_sim = 5;
+
+    // Whether the MMS was sent with an eSIM profile.
+    optional bool is_esim = 6;
+
+    // Carrier ID of the SIM card used for the MMS.
+    // See https://source.android.com/devices/tech/config/carrierid.
+    optional int32 carrier_id = 7;
+
+    // Average time in milliseconds to download MMS from the network.
+    optional int64 avg_interval_millis = 8;
+
+    // Total number of MMS having same configuration.
+    optional int64 mms_count = 9;
+
+    // Whether the default MMS application sent the MMS (regardless of which application).
+    optional bool is_from_default_app = 10;
+
+    // Retry count: 0 for the first attempt and then increasing for each attempt.
+    optional int32 retry_id = 11;
+
+    // Whether MmsService or carrier app uploaded the MMS to the network.
+    optional bool handled_by_carrier_app = 12;
+}
+
+// Logs Display Brightness change events.
+message DisplayBrightnessChanged {
+
+    enum Reason {
+        REASON_UNKNOWN = 0;
+        REASON_MANUAL = 1;
+    }
+
+    // Display brightness before the brightness event, in nits.
+    optional float initial_nits = 1;
+
+    // Display brightness after the brightness event, in nits.
+    optional float end_nits = 2;
+
+    // Estimated ambient light, in lux.
+    optional float lux = 3;
+
+    // Physical display id, with format $ADAPTER_PREFIX:$ID, in this case
+    // "local:$PHYSICAL_ID".
+    optional string physical_display_id = 4;
+
+    // Whether the short term model was active at the time of the event.
+    optional bool short_term_model_active = 5;
+
+    // The factor to adjust the screen brightness in low power mode in the range
+    // 0 (screen off) to 1 (no change).
+    // If not applied, this is set to -1.
+    optional float power_brightness_factor = 6;
+
+    // The level of Reduce Bright Colors (RBC) intensity, the range is [0, 100].
+    // If RBC is not enabled, this is set to -1;
+    optional int32 reduce_bright_colors_strength = 7;
+
+    // Max nits value when High Brightness Mode (HBM) is enabled.
+    // If HBM is not enabled, this is set to -1;
+    optional float hbm_current_max = 8;
+
+    // Thermal throttling cap.
+    // If thermal throttling not enabled, this is -1.
+    optional float thermal_throttling_cap = 9;
+
+    // Whether adaptive brightness is enabled.
+    optional bool adaptive_brightness_enabled = 10;
+
+    // Reason that triggered the brightness event to occur.
+    optional Reason reason = 11;
+}
+
+/**
+ * Logs information when a hearing aid is bonded
+ *
+ * Logged from:
+ *   frameworks/base/packages/SettingsLib/src/com/android/settingslib/bluetooth/
+ *   CachedBluetoothDevice.java
+ */
+message HearingAidInfoReported {
+    // The device mode of the bonded hearing aid
+    // Mode definition for hearing aids. See {@link BluetoothHearingAid}.
+    enum DeviceMode {
+        MODE_UNKNOWN = -1;
+        MONAURAL = 0;
+        BINAURAL = 1;
+    }
+    optional DeviceMode device_mode = 1;
+
+    // The device side of the bonded hearing aid
+    // Side definition for hearing aids. See {@link BluetoothHearingAid}.
+    enum DeviceSide {
+        SIDE_UNKNOWN = -1;
+        LEFT = 0;
+        RIGHT = 1;
+    }
+    optional DeviceSide device_side = 2;
+
+    // The entry page id where the bonding process starts
+    enum BondEntry {
+        PAGE_UNKNOWN = -1;
+        CONNECTED_DEVICES = 0;
+        ACCESSIBILITY_HEARING_AIDS = 1;
+        ACCESSIBILITY_HEARING_AID_PAIR_ANOTHER = 2;
+        BLUETOOTH = 3;
+    }
+    optional BondEntry bond_entry = 3;
+}
+
+// Logs daily ambient brightness stats.
+message AmbientBrightnessStatsReported {
+
+    // How much time was spent in each of the buckets, in seconds.
+    repeated float bucket_size_seconds = 1;
+
+    // Ambient brightness values for creating bucket boundaries from.
+    repeated float bucket_boundary_lux = 2;
+}
+
+/**
+ * Logs the Brightness Configuration pushed by the long term model. The Brightness Configuration is
+ * expressed as a curve where each point is a pair of ambient light (lux) and the corresponding
+ * screen brightness (nits).
+ *
+ * Logged from:
+ *    frameworks/base/services/core/java/com/android/server/display/DisplayManagerService.java
+ */
+message BrightnessConfigurationUpdated {
+    // Array of ambient light values (in lux) to define the configuration.
+    repeated float lux = 1;
+    // Array of screen brightness values (in nits) corresponding to the lux
+    // values above.
+    repeated float nits = 2;
+    // Physical display id, with format $ADAPTER_PREFIX:$ID, in this case
+    // "local:$PHYSICAL_ID".
+    optional string physical_display_id = 3;
+}
+
+/**
+
+ * Logs when Iwlan responds the setup data call request.
+ *
+ * Logged from:
+ *   packages/services/Iwlan/src/com/google/android/iwlan/IwlanDataService.java
+ */
+message IwlanSetupDataCallResultReported {
+  enum IwlanError {
+    NO_ERROR = 0;
+    IKE_PROTOCOL_EXCEPTION = 1;
+    IKE_INTERNAL_IO_EXCEPTION = 2;
+    IKE_GENERIC_EXCEPTION = 3;
+    EPDG_SELECTOR_SERVER_SELECTION_FAILED = 4;
+    TUNNEL_TRANSFORM_FAILED = 5;
+    SIM_NOT_READY_EXCEPTION = 6;
+    NETWORK_FAILURE = 7;
+    UNKNOWN_EXCEPTION = 8;
+  }
+
+  // Setup data call apn type
+  // See go/apntypedefinition
+  optional int32 apn_type = 1;
+  // Is the request for handover
+  optional bool is_handover = 2;
+  // ePDG server address
+  optional string epdg_server_address = 3;
+  // If the request type is handover, record the source network type
+  // See
+  // frameworks/base/telephony/java/android/telephony/TelephonyManager.java
+  optional int32 source_rat = 4;
+  // If the request type is handover, record the source network roaming status
+  optional bool is_cellular_roaming = 5;
+  // Is network connected
+  optional bool is_network_connected = 6;
+  // Default network transport type
+  // See
+  // packages/modules/Connectivity/framework/src/android/net/NetworkCapabilities.java
+  optional int32 transport_type = 7;
+  // Setup result
+  optional int32 setup_request_result = 8;
+  // Iwlan error code if setup failed
+  optional IwlanError iwlan_error = 9;
+  // Data call fail cause
+  // See
+  // frameworks/base/telephony/java/android/telephony/DataFailCause.java
+  optional int32 data_call_fail_cause = 10;
+  // Setup request processing duration
+  optional int32 processing_duration_millis = 11;
+  // Time for doing ePDG server selection through DNS query of FQDNs
+  optional int32 epdg_server_selection_duration_millis = 12;
+  // Time for establishing IKE tunnel
+  optional int32 ike_tunnel_establishment_duration_millis = 13;
+  // Tunnel State
+  // See
+  // packages/services/Iwlan/src/com/google/android/iwlan/IwlanDataService.java
+  optional int32 tunnel_state = 14;
+  // Handover failure mode
+  // See
+  // frameworks/base/telephony/java/android/telephony/data/DataCallResponse.java
+  optional int32 handover_failure_mode = 15;
+  // Retry duration
+  optional int32 retry_duration_millis = 16;
+}
+
+/**
+ * Logs when Iwlan reports IWLAN PDN disconnected without deactivation request.
+ *
+ * Logged from:
+ *   packages/services/Iwlan/src/com/google/android/iwlan/IwlanDataService.java
+ */
+message IwlanPdnDisconnectedReasonReported {
+  // Disconnection cause
+  // See
+  // frameworks/base/telephony/java/android/telephony/DataFailCause.java
+  optional int32 cause = 1;
+  // Is network connected
+  optional bool is_network_connected = 2;
+  // default network transport type
+  // See
+  // packages/services/Iwlan/src/com/google/android/iwlan/IwlanDataService.java
+  optional int32 transport_type = 3;
+  // Wifi signal level
+  optional int32 wifi_signal_level = 4;
+}
+
+/**
+ * Logs information related to audio egress in hotword.
+ */
+message HotwordAudioEgressEventReported {
+    // The type of detector.
+    optional android.hotword.HotwordDetectorType detector_type = 1;
+
+    // The type of event.
+    enum Event {
+        // UNKNOWN value.
+        UNKNOWN = 0;
+
+        // Indicates that the audio egress started.
+        STARTED = 1;
+
+        // Indicates that the audio egress ended.
+        ENDED = 2;
+
+        // Indicates that the audio egress got interrupted exception.
+        INTERRUPTED_EXCEPTION = 3;
+
+        // Indicates that the client is not granted permission to access audio egress.
+        NO_PERMISSION = 4;
+
+        // Indicates that the client is inactive over a period of time.
+        INACTIVE_CLIENT = 5;
+
+        // Indicates that the HotwordDetectionService is inactive over a period
+        // of time.
+        INACTIVE_HOTWORD_DETECTION_SERVICE = 6;
+
+        // Indicates that the list of audio stream is empty.
+        EMPTY_AUDIO_STREAM_LIST = 7;
+
+        // Indicates that there is no data from the system audio stream.
+        SOURCE_IS_EMPTY = 8;
+
+        // Indicates that the copy buffer size the client sets is illegal.
+        ILLEGAL_COPY_BUFFER_SIZE = 9;
+
+        // Indicates that the audio egress is closed with error from the system.
+        CLOSE_ERROR_FROM_SYSTEM = 10;
+
+        // Indicates that the audio egress is closed with error from the client side.
+        CLOSE_ERROR_FROM_CLIENT = 11;
+
+        // Indicates that the audio egress is closed with error from the
+        // HotwordDetectionService.
+        CLOSE_ERROR_FROM_HOTWORD_DETECTION_SERVICE = 12;
+   }
+    optional Event event = 2;
+
+    // The UID for which the assistant application is active.
+    optional int32 uid = 3 [(is_uid) = true];
+
+    // The number of bytes egressed in audio stream
+    optional int32 egressed_stream_size_bytes = 4;
+
+    // The number of bytes egressed in metadata bundle
+    optional int32 egressed_metadata_bundle_size_bytes = 5;
+
+    // The count of audio streams
+    optional int32 stream_count = 6;
+}
+
+/**
+ * Logs information related to Android Dynamic Performance Framework (ADPF).
+ */
+
+message PerformanceHintSessionReported {
+    // UID of the package.
+    optional int32 package_uid = 1 [(is_uid) = true];
+
+    // Unique ID of the hint session.
+    optional int64 session_id = 2;
+
+    // Hint session target duration, in nanoseconds.
+    optional int64 target_duration_ns = 3;
+
+    // Number of threads affected by this session
+    optional int32 tid_count = 4;
+}
+
+message ADPFSystemComponentInfo {
+    // True if SurfaceFlinger CPU hint is enabled on the device.
+    optional bool surfaceflinger_cpu_hint_enabled = 1;
+
+    // True if HWUI hint is enabled on the device.
+    optional bool hwui_hint_enabled = 2;
 }
