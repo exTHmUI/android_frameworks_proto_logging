@@ -30,6 +30,7 @@ cc_library_static {
         "enums.proto",
         "hci/enums.proto",
         "hfp/enums.proto",
+        "le/enums.proto",
         "smp/enums.proto",
     ],
     apex_available: [
@@ -45,7 +46,14 @@ filegroup {
       "enums.proto",
       "hci/enums.proto",
       "hfp/enums.proto",
+      "le/enums.proto",
       "smp/enums.proto",
   ],
 }
 
+filegroup {
+  name: "srcs_bluetooth_leaudio_protos",
+  srcs: [
+      "leaudio/enums.proto",
+  ],
+}
